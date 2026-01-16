@@ -1,25 +1,26 @@
 #include "raylib.h"
 
 
-int main(void)
-{
-	InitWindow(1000, 500, "Flappy Bird"); //Começar uma janela!
-		
+#define WIDTH 1000
+#define HEIGHT 500
+#define FPS 60
 
-	while (!WindowShouldClose()) //Loop que define 'Enquanto janela aberta..'
+
+void  main()
+{
+	InitWindow(WIDTH, HEIGHT, "Flappy Bird"); //Começar uma janela!
+	SetTargetFPS(FPS);	
+
+	while (!WindowShouldClose()) //Loop que define: 'Enquanto janela aberta..'
 	{
 
 
-
-
-		
 		ClearBackground(DARKGRAY);
 		EndDrawing();
 	}
 
 		CloseWindow();
 
-		return 0;
 }
 
 
