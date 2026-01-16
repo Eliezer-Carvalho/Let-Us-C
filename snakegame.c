@@ -3,19 +3,28 @@
 
 int main(void)
 {
-    InitWindow(800, 450, "raylib [core] example - basic window");
+	InitWindow(800, 450, "raylib [core] example - basic window"); //Começar uma janela!
+	
+	Camera3D pao  = { 0 }; //Camera3D é o nome da struct, obrigatoriamente tem que ser usado. Nem int, nem float, nem nada neste caso.
+	Vector3 posicao = { 0, 0, 0};
+	
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-        EndDrawing();
-    }
+	while (!WindowShouldClose()) //Loop que define 'Enquanto janela aberta..'
+	{
+		BeginMode3D(pao);
+		ClearBackground(RAYWHITE);
+           	DrawCube(posicao, 5, 5, 5, DARKGREEN);
+	
 
-    CloseWindow();
+		
 
-    return 0;
+		EndMode3D();
+		EndDrawing();
+	}
+
+		CloseWindow();
+
+		return 0;
 }
 
 
