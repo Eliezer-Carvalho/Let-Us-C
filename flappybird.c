@@ -6,26 +6,38 @@
 #define FPS 60
 
 
-float  y = 100; //pos inicial do boneco para simular caída (começa de baixo para cima)
+float ball_speed_x = 1.0;
+float ball_speed_y = 3.0;
 
 
 void  main()
 {
 	InitWindow(WIDTH, HEIGHT, "Flappy Bird"); //Começar uma janela!
-	SetTargetFPS(FPS);	
+	SetTargetFPS(FPS); //FPS estabelecidos para não sobrecarregar CPU	
 
+	
+	
 	while (!WindowShouldClose()) //Loop que define: 'Enquanto janela aberta..'
 	{
+		
+		float y = 100;
+		float x = 300;
+
+		if (y == HEIGHT) {
+			DrawText("end game", WIDTH / 2, HEIGHT / 2, 20, ORANGE);
+
+		}
+
+
 		BeginDrawing();
 
-		DrawCircle(WIDTH / 2, y += 4, 30, ORANGE);
-		if (y == HEIGHT) {
-			y = HEIGHT;
-			DrawCircle(WIDTH / 2, HEIGHT, 30, ORANGE);
-			DrawText("END GAME", WIDTH / 2, HEIGHT /  2, 20, ORANGE);
-		}	
-
 		ClearBackground(DARKGRAY);
+
+		DrawCircle(x += ball_speed_x, y += ball_speed_y, 30, ORANGE); //Desenho do circulo com y += para simular queda
+		DrawText(TextFormat("X = %f", x), 10, 10, 20,  ORANGE);
+		DrawText(TextFormat("Y = %f", y), 10, 40, 20, ORANGE);
+
+		
 		EndDrawing();
 	}
 
@@ -33,5 +45,7 @@ void  main()
 
 }
 
-
+/* Problemas com o movimento da bola.
+ * Sem conseguir detetar height
+ * Gravidade ? */
 
