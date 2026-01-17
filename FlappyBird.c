@@ -8,13 +8,11 @@
 
 float gravity = 0.1;
 
-
-
 float ball_speed_x = 1.0;
-float ball_speed_y = 0.5;
+float ball_speed_y = 0.1;
 
-float x = 300.0; // > + mais para a direita
-float y = 250.0; // > + para baixo 
+float x = 10.0; // > + mais para a direita
+float y = 1.0; // > + para baixo 
 
 
 
@@ -28,18 +26,25 @@ void  main()
 	{;
 
 	
-	       	ball_speed_y += gravity;	//acelaração = velocidade + gravidade
-		y += ball_speed_y; 
+	       	ball_speed_y += gravity;	// ball_speed_y = ball_speed_y + gravity && A gravidade aumenta a velocidade ao longo do tempo.
+		y += ball_speed_y; 		// y = y + ball_speed_y && A velocidade muda o movimento.
 
 
-		if ((y += ball_speed_y) >= HEIGHT) {
-			ball_speed_y *= 0;	//THE BEST EVER! * 0 reduz a velocidade para 0 == a bola para!
-			gravity *= 0;
-		
-		
+		if ((y += ball_speed_y) >= HEIGHT) { //Estabelece o limite da bola que neste caso é o chão
+			ball_speed_y *= 0;	//A velocidade passa a 0 porque queremos terminar o movimento.
+			gravity *= 0;		//A gravidade passa também a 0.
 		}
 
 
+		x += ball_speed_x; //Incrementação do deslocamento
+
+
+
+		if (IsKeyPressed(KEY_SPACE)) { //Deteta se a tecla espaço está a ser clicada
+			if (ball_speed_y > 0) { //Só permite saltar a bola quando a mesma está em queda livre
+			ball_speed_y = -4; //Define o salto, - porque queremos o inverso da descida e se a descida é a somar, a subida é o inverso.
+			}
+		}
 
 
 		BeginDrawing();
