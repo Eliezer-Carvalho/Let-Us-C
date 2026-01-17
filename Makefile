@@ -1,3 +1,3 @@
 all:
-	gcc snakegame.c -o snakegame.exe  -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+	gcc flappybird.c -o flappybird.exe  -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
