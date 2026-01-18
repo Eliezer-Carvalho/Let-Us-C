@@ -17,8 +17,8 @@ float y = 450.0; // > + para baixo
 
 
 
-void  main()
-{
+void  main() {
+
 	InitWindow(WIDTH, HEIGHT, "Flappy Bird"); //Começar uma janela!
 	SetTargetFPS(FPS); //FPS estabelecidos para não sobrecarregar CPU	
 	
@@ -32,18 +32,19 @@ void  main()
         cam.rotation = 0.0f;
         cam.zoom = 0.5f;
 
+	float rectx = WIDTH / 1.5;
+	float recty = HEIGHT - 365;
 
 
-
-	while (!WindowShouldClose()) //Loop que define: 'Enquanto janela aberta..'
-	{;
+	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
+	
 		
 	
 	       	ball_speed_y += gravity;	// ball_speed_y = ball_speed_y + gravity && A gravidade aumenta a velocidade ao longo do tempo.
 		y += ball_speed_y; 		// y = y + ball_speed_y && A velocidade muda o movimento.
 
 
-		if (y >= HEIGHT*2.05) { //Estabelece o limite da bola que neste caso é o chão
+		if (y >= HEIGHT*2.3) { //Estabelece o limite da bola que neste caso é o chão
 
 			ball_speed_y *= 0;	//A velocidade passa a 0 porque queremos terminar o movimento.
 			gravity *= 0;		//A gravidade passa também a 0.
@@ -51,7 +52,7 @@ void  main()
 	
 		}
 
-		if (y <= HEIGHT /1) {
+		if (y <= HEIGHT - 220) {
 
 			ball_speed_y *= 0;
 			gravity *= 0;
@@ -75,18 +76,35 @@ void  main()
 		       	scroll = 0;
 		}
 
+
+		
+
+		if (ball_speed_x == rectx && ball_speed_y ==recty) {
+			ball_speed_y *= 0;
+			gravity *= 0;
+			ball_speed_x *= 0;
+		}
+	
+
+
 		BeginDrawing();
 		ClearBackground(DARKGRAY);
 	
 		
 		DrawTextureEx(fundo, (Vector2) {scroll, 0}, 0.0f, 1.0f, DARKPURPLE);
 		DrawTextureEx(fundo, (Vector2) {scroll + fundo.width, 0}, 0.0f, 1.0f, DARKPURPLE);
+	
+
+		
+
+		DrawRectangle(rectx, recty, 40, 200, RED);
+		rectx--;
 		BeginMode2D(cam);
 
 
 		
 		DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
-	//	DrawRectangle(WIDTH / 2, HEIGHT / 2, 30, 30, RED);
+
 
 		EndMode2D();
 		
