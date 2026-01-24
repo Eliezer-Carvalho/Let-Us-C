@@ -17,6 +17,9 @@ float y = 450.0; // > + para baixo
 
 
 
+
+
+
 void  main() {
 
 	InitWindow(WIDTH, HEIGHT, "Flappy Bird"); //Começar uma janela!
@@ -24,6 +27,8 @@ void  main() {
 	
 
 	Texture2D fundo = LoadTexture("Background/teste/Tropical mountains - Layer 1.png"); // A imagem é sempre carregada com duas vezes a escala original
+	Texture2D fundo_chão = LoadTexture("Background/teste/Tropical mountains - Layer 3.png"); // Imagem de baixo
+	
 	float scroll = 0.0f;
 
 	Camera2D cam = { 0 };
@@ -35,10 +40,18 @@ void  main() {
 	float rectx = WIDTH / 1.5;
 	float recty = HEIGHT - 365;
 
-
+	float rectx2 = rectx;
+	
 	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
 	
 		
+		//Condição para o jogo não começar logo
+		
+
+
+
+
+
 	
 	       	ball_speed_y += gravity;	// ball_speed_y = ball_speed_y + gravity && A gravidade aumenta a velocidade ao longo do tempo.
 		y += ball_speed_y; 		// y = y + ball_speed_y && A velocidade muda o movimento.
@@ -71,7 +84,7 @@ void  main() {
 	
 		cam.target = (Vector2) {x, HEIGHT}; 	
 	
-		scroll -= 0.8f;
+		scroll -= 2.0f; //Velocidade do scroll para a esquerda, por isso o -.
 		if (scroll <= -fundo.width) {
 		       	scroll = 0;
 		}
@@ -79,26 +92,42 @@ void  main() {
 
 		
 
-		if (ball_speed_x == rectx && ball_speed_y ==recty) {
+	/*	if (ball_speed_x == rectx && ball_speed_y ==recty) {
 			ball_speed_y *= 0;
 			gravity *= 0;
 			ball_speed_x *= 0;
 		}
-	
+	*/
 
 
 		BeginDrawing();
-		ClearBackground(DARKGRAY);
+		ClearBackground(WHITE);
 	
-		
-		DrawTextureEx(fundo, (Vector2) {scroll, 0}, 0.0f, 1.0f, DARKPURPLE);
-		DrawTextureEx(fundo, (Vector2) {scroll + fundo.width, 0}, 0.0f, 1.0f, DARKPURPLE);
-	
+		//Necessário 2 FUNDOS porque um é o inicial e o outro é o consequente
+
+		DrawTextureV(fundo, (Vector2) {scroll, 0}, WHITE); //Fundo inicial, no Vector (0,0)
+		DrawTextureV(fundo, (Vector2) {scroll + fundo.width, 0}, WHITE); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
+
+		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, WHITE);
+		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, WHITE);
 
 		
+
 
 		DrawRectangle(rectx, recty, 40, 200, RED);
 		rectx--;
+			
+		/*for ( int i = 0; i < 5; i++) {
+
+			DrawRectangle(rectx, recty, 40, 200, RED);
+			rectx--;
+			
+			rectx2 += 20;
+			DrawRectangle(rectx2, recty, 40, 200, RED);
+
+		}*/
+
+
 		BeginMode2D(cam);
 
 
@@ -110,11 +139,12 @@ void  main() {
 		
 
 		DrawText(TextFormat("X = %f", x), 10, 10, 10,  ORANGE);
-		DrawText(TextFormat("Y = %f", y), 10, 40, 10, ORANGE);
-		DrawText(TextFormat("Gravidade = %f", gravity), 10, 80, 10, ORANGE);
-		DrawText(TextFormat("VELOCIDADE = %f", ball_speed_y), 10, 120, 20, ORANGE);
-
+		DrawText(TextFormat("Y = %f", y), 10, 30, 10, ORANGE);
+		DrawText(TextFormat("Gravidade = %f", gravity), 10, 50, 10, ORANGE);
+		DrawText(TextFormat("VELOCIDADE = %f", ball_speed_y), 10, 70, 10, ORANGE);
+		DrawText(TextFormat("SCROLL = %f", scroll), 10, 90, 10, ORANGE);
 		
+
 		EndDrawing();
 	}
 		UnloadTexture(fundo);
