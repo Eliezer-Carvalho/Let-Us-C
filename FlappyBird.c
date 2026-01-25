@@ -93,9 +93,8 @@ void  main() {
 
 		x += ball_speed_x; //Incrementação do deslocamento
 		
-
-
-		if (IsKeyPressed(KEY_SPACE)) { //Deteta se a tecla espaço está a ser clicada
+	
+		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) { //Deteta se a tecla espaço está a ser clicada
 			if (ball_speed_y > 0) { //Só permite saltar a bola quando a mesma está em queda livre
 			ball_speed_y = -10; //Define o salto, - porque queremos o inverso da descida e se a descida é a somar, a subida é o inverso.
 			}
