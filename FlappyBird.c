@@ -13,7 +13,7 @@ float ball_speed_x = 1.5;
 float ball_speed_y = 1;
 
 float x = 10.0; // > + mais para a direita
-float y = 450.0; // > + para baixo 
+float y = 100.0; // > + para baixo 
 
 
 struct colunas {
@@ -22,7 +22,7 @@ struct colunas {
 	int h2;
 };
 
-
+float rot = 0;
 
 void  main() {
 
@@ -76,20 +76,35 @@ void  main() {
 		y += ball_speed_y; 		// y = y + ball_speed_y && A velocidade muda o movimento.
 
 
-		if (y >= HEIGHT*2.3) { //Estabelece o limite da bola que neste caso é o chão
+		if (y >= 760 || y <= 100) { //Estabelece o limite da bola que neste caso é o chão
 
 			ball_speed_y *= 0;	//A velocidade passa a 0 porque queremos terminar o movimento.
 			gravity *= 0;		//A gravidade passa também a 0.
 			ball_speed_x *= 0;
-	
+			scroll *= 0;
+			scroll2 *= 0;		
 		}
 
-		if (y <= HEIGHT - 220) {
 
-			ball_speed_y *= 0;
-			gravity *= 0;
-			ball_speed_x *= 0;
+	       	else if (y < 760 && y > 100) {
+			scroll -= 1.5f;
+			if (scroll <= -fundo_chão.width) {
+				scroll = 0;
 			}
+
+			scroll2 -= 0.5f;
+                        if (scroll2 <= -fundo.width) {
+                                scroll2 = 0;
+                        }
+
+		} 
+	
+		
+	
+	
+	
+
+
 
 		x += ball_speed_x; //Incrementação do deslocamento
 		
@@ -102,27 +117,15 @@ void  main() {
 	
 		cam.target = (Vector2) {x, HEIGHT}; 	
 	
-		scroll -= 1.5f; //Velocidade do scroll para a esquerda, por isso o -.
-		if (scroll <= -fundo_chão.width) {
-		       	scroll = 0;
-		}
-
-		scroll2 -= 0.5f;
-		if (scroll2 <= -fundo.width) {  //Negativo pois estamos a decrementar
-			scroll2 = 0;
-		}
-		
-		
-		
-
+	
 		
 
 		BeginDrawing();
 		ClearBackground(WHITE);
-
+		
 
 		//Necessário 2 FUNDOS porque um é o inicial e o outro é o consequente
-
+		
 		DrawTextureV(fundo, (Vector2) {scroll2, 0}, WHITE); //Fundo inicial, no Vector (0,0)
 		DrawTextureV(fundo, (Vector2) {scroll2 + fundo.width, 0}, WHITE);			 
 
@@ -132,10 +135,15 @@ void  main() {
 	
 
 		for (int i = 0; i < 20; i++) {
+
+		
 			DrawRectangle(cols[i].rectx, 0, 70, cols[i].h, DARKBLUE);
 			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 70, cols[i].h2, DARKBLUE);
 	
+			if (y > 100 && y < 760) {
 			cols[i].rectx -= 2;
+			}
+			
 		}
 
 
@@ -146,9 +154,14 @@ void  main() {
 		//DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
 		
 
-		DrawTextureEx(flappy, (Vector2) {x, y}, 0, 0.2, WHITE);
-		
+		DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
+		if (ball_speed_y > 0 && rot < 30) {
+			rot += 1.5;	
+		}
 
+		else if (ball_speed_y < -0.5 && rot > -30) {
+			rot -= 1.5;
+		}
 		EndMode2D();
 		
 
@@ -157,13 +170,15 @@ void  main() {
 		DrawText(TextFormat("Gravidade = %f", gravity), 10, 50, 10, ORANGE);
 		DrawText(TextFormat("VELOCIDADE = %f", ball_speed_y), 10, 70, 10, ORANGE);
 		DrawText(TextFormat("SCROLL = %f", scroll2), 10, 90, 10, ORANGE);
-		
+		DrawText(TextFormat("Altura = %i || Largura = %i", GetScreenHeight(), GetScreenWidth()), 10, 110, 10, ORANGE);
 
 		EndDrawing();
 	//	printf("rectx = %f", cols[10].rectx);
 	
 	}
 		UnloadTexture(fundo);
+		UnloadTexture(fundo_chão);
+		UnloadTexture(flappy);
 		CloseWindow();
 		
 }
