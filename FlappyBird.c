@@ -145,7 +145,7 @@ void  main() {
 		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, LIME); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
 		
 
-		Rectangle flappyrec = {x, y - 20, 125, 115};
+		Rectangle flappyrec = {x+30, y, 100, 100};
 	
 
 		for (int i = 0; i < 20; i++) {
@@ -160,20 +160,25 @@ void  main() {
 			}
 		
 
-			Rectangle pipecima = {cols[i].rectx + 2, 0, 70, cols[i].h + 5};
+			Rectangle pipecima = {cols[i].rectx, 30, 70, cols[i].h};
 	       		Rectangle pipebaixo = {cols[i].rectx + 2, (HEIGHT - cols[i].h2) - 5, 70, cols[i].h2};
 
 			DrawRectangleLinesEx(pipecima, 2.0, RED);
                         DrawRectangleLinesEx(pipebaixo, 2.0,  RED);
         	
 			colisao1 = CheckCollisionRecs(flappyrec, pipecima);
-			colisao2 = CheckCollisionRecs(flappyrec, pipebaixo);
+                	colisao2 = CheckCollisionRecs(flappyrec, pipebaixo);
 
+			if (colisao1) {
+				
+				DrawText(TextFormat("COLISÃO CIMA = %d", colisao1), 10, 130, 30, RED);
+
+
+			}
 		}
-		
-	
-		DrawText(TextFormat("COLISÃO CIMA = %b || COLISÃO BAIXO = %b", colisao1, colisao2), 10, 130, 30, RED);
 
+	
+	
 
 
 		BeginMode2D(cam);
@@ -185,7 +190,7 @@ void  main() {
 
 
 		DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
-		DrawRectangleLinesEx(flappyrec, 1.0, RED);
+		DrawRectangleLinesEx(flappyrec, 3.0, RED);
 		if (ball_speed_y > 0 && rot < 30) {
 			rot += 1;	
 		}
