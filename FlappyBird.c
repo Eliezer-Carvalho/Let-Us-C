@@ -45,17 +45,17 @@ void  main() {
 
 	struct colunas cols [6] =
 
-                        {640, GetRandomValue(50, 160), GetRandomValue(50, 160),
+                        {640, GetRandomValue(75, 150), GetRandomValue(75, 150),
 
-                        840, GetRandomValue(50, 160), GetRandomValue(50, 160),
+                        840, GetRandomValue(75, 150), GetRandomValue(75, 150),
 			
-			1040, GetRandomValue(50, 160), GetRandomValue(50, 160),
+			1040, GetRandomValue(75, 150), GetRandomValue(75, 150),
 
-			1240, GetRandomValue(50, 160), GetRandomValue(50, 160),
+			1240, GetRandomValue(75, 150), GetRandomValue(75, 150),
 
-			1440, GetRandomValue(50, 160), GetRandomValue(50, 160),
+			1440, GetRandomValue(75, 150), GetRandomValue(75, 150),
 
-			1640, GetRandomValue(50, 160), GetRandomValue(50, 160)
+			1640, GetRandomValue(75, 150), GetRandomValue(75, 150)
 		
 			};
 
@@ -110,7 +110,7 @@ void  main() {
 
 		scroll2 -= 0.5f;
 		if (scroll2 <= -fundo.width) {  //Negativo pois estamos a decrementar
-			scroll = 0;
+			scroll2 = 0;
 		}
 		
 
@@ -133,7 +133,7 @@ void  main() {
 			DrawRectangle(cols[i].rectx, 0, 60, cols[i].h, RED);
 			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 60, cols[i].h2, RED);
 	
-			cols[i].rectx - 3;
+			cols[i].rectx -= 2;
 		}
 
 
@@ -151,7 +151,7 @@ void  main() {
 		DrawText(TextFormat("Y = %f", y), 10, 30, 10, ORANGE);
 		DrawText(TextFormat("Gravidade = %f", gravity), 10, 50, 10, ORANGE);
 		DrawText(TextFormat("VELOCIDADE = %f", ball_speed_y), 10, 70, 10, ORANGE);
-		DrawText(TextFormat("SCROLL = %f", scroll), 10, 90, 10, ORANGE);
+		DrawText(TextFormat("SCROLL = %f", scroll2), 10, 90, 10, ORANGE);
 		
 
 		EndDrawing();
