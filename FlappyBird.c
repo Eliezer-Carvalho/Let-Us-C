@@ -24,11 +24,17 @@ struct colunas {
 
 float rot = 0;
 
+
+
+
+
 void  main() {
 
 	InitWindow(WIDTH, HEIGHT, "Flappy Bird"); //Começar uma janela!
 	SetTargetFPS(FPS); //FPS estabelecidos para não sobrecarregar CPU	
-	
+
+//	Rectangle flappyrec = {ball_speed_x, ball_speed_y, flappy_width, flappy_height};
+		
 
 	Texture2D fundo = LoadTexture("Background/teste/Tropical mountains - Layer 1.png"); // A imagem é sempre carregada com duas vezes a escala original
 	Texture2D fundo_chão = LoadTexture("Background/teste/Tropical mountains - Layer 3.png"); // Imagem de baixo
@@ -59,7 +65,8 @@ void  main() {
 		rectx += 200;
 	}
 	
-
+	bool colisao1 = false;
+	bool colisao2 = false;
 
 
 	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
@@ -118,7 +125,12 @@ void  main() {
 		cam.target = (Vector2) {x, HEIGHT}; 	
 	
 	
-		
+		//colisão1 = CheckCollisionRecs(flappy, pipecima);
+		//	if (colisão1 == True) {
+		//		DrawText(TextFormat("OKK"), 30, 30, 20,  ORANGE);
+		//	}
+			
+
 
 		BeginDrawing();
 		ClearBackground(WHITE);
@@ -131,7 +143,9 @@ void  main() {
 
 		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, LIME);
 		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, LIME); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
+		
 
+		Rectangle flappyrec = {x, y - 20, 125, 115};
 	
 
 		for (int i = 0; i < 20; i++) {
@@ -139,12 +153,27 @@ void  main() {
 		
 			DrawRectangle(cols[i].rectx, 0, 70, cols[i].h, DARKBLUE);
 			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 70, cols[i].h2, DARKBLUE);
-	
+			
+
 			if (y > 100 && y < 760) {
 			cols[i].rectx -= 2;
 			}
-			
+		
+
+			Rectangle pipecima = {cols[i].rectx + 2, 0, 70, cols[i].h + 5};
+	       		Rectangle pipebaixo = {cols[i].rectx + 2, (HEIGHT - cols[i].h2) - 5, 70, cols[i].h2};
+
+			DrawRectangleLinesEx(pipecima, 2.0, RED);
+                        DrawRectangleLinesEx(pipebaixo, 2.0,  RED);
+        	
+			colisao1 = CheckCollisionRecs(flappyrec, pipecima);
+			colisao2 = CheckCollisionRecs(flappyrec, pipebaixo);
+
 		}
+		
+	
+		DrawText(TextFormat("COLISÃO CIMA = %b || COLISÃO BAIXO = %b", colisao1, colisao2), 10, 130, 30, RED);
+
 
 
 		BeginMode2D(cam);
@@ -152,15 +181,17 @@ void  main() {
 
 		
 		//DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
-		
+
+
 
 		DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
+		DrawRectangleLinesEx(flappyrec, 1.0, RED);
 		if (ball_speed_y > 0 && rot < 30) {
-			rot += 1.5;	
+			rot += 1;	
 		}
 
 		else if (ball_speed_y < -0.5 && rot > -30) {
-			rot -= 1.5;
+			rot -= 1;
 		}
 		EndMode2D();
 		
