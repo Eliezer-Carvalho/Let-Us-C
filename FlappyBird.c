@@ -32,7 +32,9 @@ void  main() {
 
 	Texture2D fundo = LoadTexture("Background/teste/Tropical mountains - Layer 1.png"); // A imagem é sempre carregada com duas vezes a escala original
 	Texture2D fundo_chão = LoadTexture("Background/teste/Tropical mountains - Layer 3.png"); // Imagem de baixo
-	
+	Texture2D flappy = LoadTexture("Background/flappybird.png");
+
+
 	float scroll = 0.0f;
 	float scroll2 = 0.0f; 
 
@@ -125,14 +127,14 @@ void  main() {
 		DrawTextureV(fundo, (Vector2) {scroll2, 0}, WHITE); //Fundo inicial, no Vector (0,0)
 		DrawTextureV(fundo, (Vector2) {scroll2 + fundo.width, 0}, WHITE);			 
 
-		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, WHITE);
-		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, WHITE); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
+		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, LIME);
+		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, LIME); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
 
 	
 
 		for (int i = 0; i < 20; i++) {
-			DrawRectangle(cols[i].rectx, 0, 60, cols[i].h, RED);
-			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 60, cols[i].h2, RED);
+			DrawRectangle(cols[i].rectx, 0, 70, cols[i].h, DARKBLUE);
+			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 70, cols[i].h2, DARKBLUE);
 	
 			cols[i].rectx -= 2;
 		}
@@ -142,8 +144,11 @@ void  main() {
 
 
 		
-		DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
+		//DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
+		
 
+		DrawTextureEx(flappy, (Vector2) {x, y}, 0, 0.2, WHITE);
+		
 
 		EndMode2D();
 		
