@@ -16,7 +16,11 @@ float x = 10.0; // > + mais para a direita
 float y = 450.0; // > + para baixo 
 
 
-
+struct colunas {
+	float rectx;
+	int h;
+	int h2;
+};
 
 
 
@@ -30,6 +34,7 @@ void  main() {
 	Texture2D fundo_chão = LoadTexture("Background/teste/Tropical mountains - Layer 3.png"); // Imagem de baixo
 	
 	float scroll = 0.0f;
+	float scroll2 = 0.0f; 
 
 	Camera2D cam = { 0 };
         cam.target = (Vector2){x, HEIGHT};
@@ -37,13 +42,27 @@ void  main() {
         cam.rotation = 0.0f;
         cam.zoom = 0.5f;
 
-	float rectx = WIDTH / 1.5;
-	float recty = HEIGHT - 365;
 
-	float rectx2 = rectx;
-	
+	struct colunas cols [6] =
+
+                        {640, GetRandomValue(50, 160), GetRandomValue(50, 160),
+
+                        840, GetRandomValue(50, 160), GetRandomValue(50, 160),
+			
+			1040, GetRandomValue(50, 160), GetRandomValue(50, 160),
+
+			1240, GetRandomValue(50, 160), GetRandomValue(50, 160),
+
+			1440, GetRandomValue(50, 160), GetRandomValue(50, 160),
+
+			1640, GetRandomValue(50, 160), GetRandomValue(50, 160)
+		
+			};
+
+
+
+
 	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
-	
 		
 		//Condição para o jogo não começar logo
 		
@@ -84,48 +103,38 @@ void  main() {
 	
 		cam.target = (Vector2) {x, HEIGHT}; 	
 	
-		scroll -= 2.0f; //Velocidade do scroll para a esquerda, por isso o -.
-		if (scroll <= -fundo.width) {
+		scroll -= 1.5f; //Velocidade do scroll para a esquerda, por isso o -.
+		if (scroll <= -fundo_chão.width) {
 		       	scroll = 0;
 		}
 
-
-		
-
-	/*	if (ball_speed_x == rectx && ball_speed_y ==recty) {
-			ball_speed_y *= 0;
-			gravity *= 0;
-			ball_speed_x *= 0;
+		scroll2 -= 0.5f;
+		if (scroll2 <= -fundo.width) {  //Negativo pois estamos a decrementar
+			scroll = 0;
 		}
-	*/
+		
 
 
 		BeginDrawing();
 		ClearBackground(WHITE);
-	
+
+
 		//Necessário 2 FUNDOS porque um é o inicial e o outro é o consequente
 
-		DrawTextureV(fundo, (Vector2) {scroll, 0}, WHITE); //Fundo inicial, no Vector (0,0)
-		DrawTextureV(fundo, (Vector2) {scroll + fundo.width, 0}, WHITE); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
+		DrawTextureV(fundo, (Vector2) {scroll2, 0}, WHITE); //Fundo inicial, no Vector (0,0)
+		DrawTextureV(fundo, (Vector2) {scroll2 + fundo.width, 0}, WHITE);			 
 
 		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, WHITE);
-		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, WHITE);
+		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, WHITE); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
 
-		
+	
 
-
-		DrawRectangle(rectx, recty, 40, 200, RED);
-		rectx--;
-			
-		/*for ( int i = 0; i < 5; i++) {
-
-			DrawRectangle(rectx, recty, 40, 200, RED);
-			rectx--;
-			
-			rectx2 += 20;
-			DrawRectangle(rectx2, recty, 40, 200, RED);
-
-		}*/
+		for (int i = 0; i < 6; i++) {
+			DrawRectangle(cols[i].rectx, 0, 60, cols[i].h, RED);
+			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 60, cols[i].h2, RED);
+	
+			cols[i].rectx - 3;
+		}
 
 
 		BeginMode2D(cam);
@@ -146,10 +155,11 @@ void  main() {
 		
 
 		EndDrawing();
+	//	printf("rectx = %f", cols[1].rectx);
 	}
 		UnloadTexture(fundo);
 		CloseWindow();
-
+		
 }
 
 /* Problemas com o movimento da bola.
