@@ -1,5 +1,5 @@
 #include "raylib.h"
-
+#include <stdio.h>
 
 
 #define WIDTH 640
@@ -42,23 +42,21 @@ void  main() {
         cam.rotation = 0.0f;
         cam.zoom = 0.5f;
 
+	struct colunas cols [20];
+	int rectx = 640;
+	for (int i = 0; i < 20; i++) {
 
-	struct colunas cols [6] =
+		int h = GetRandomValue(75,150);
+		int h2 = GetRandomValue(75, 150);
 
-                        {640, GetRandomValue(75, 150), GetRandomValue(75, 150),
 
-                        840, GetRandomValue(75, 150), GetRandomValue(75, 150),
-			
-			1040, GetRandomValue(75, 150), GetRandomValue(75, 150),
+		cols[i].rectx = rectx;
+	        cols[i].h = h;
+	        cols[i].h2 = h2;
 
-			1240, GetRandomValue(75, 150), GetRandomValue(75, 150),
-
-			1440, GetRandomValue(75, 150), GetRandomValue(75, 150),
-
-			1640, GetRandomValue(75, 150), GetRandomValue(75, 150)
-		
-			};
-
+		rectx += 200;
+	}
+	
 
 
 
@@ -113,7 +111,10 @@ void  main() {
 			scroll2 = 0;
 		}
 		
+		
+		
 
+		
 
 		BeginDrawing();
 		ClearBackground(WHITE);
@@ -129,7 +130,7 @@ void  main() {
 
 	
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 20; i++) {
 			DrawRectangle(cols[i].rectx, 0, 60, cols[i].h, RED);
 			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 60, cols[i].h2, RED);
 	
@@ -155,7 +156,8 @@ void  main() {
 		
 
 		EndDrawing();
-	//	printf("rectx = %f", cols[1].rectx);
+	//	printf("rectx = %f", cols[10].rectx);
+	
 	}
 		UnloadTexture(fundo);
 		CloseWindow();
