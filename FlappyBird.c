@@ -69,6 +69,9 @@ void  main() {
 	bool colisao2 = false;
 
 
+	int hitboxflappy_x = flappy.width * 0.2 * 0.5;
+	int hitboxflappy_y = flappy.height * 0.2 * 0.5;
+
 	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
 		
 		//Condição para o jogo não começar logo
@@ -143,11 +146,22 @@ void  main() {
 
 		DrawTextureV(fundo_chão, (Vector2) {scroll, HEIGHT / 4}, LIME);
 		DrawTextureV(fundo_chão, (Vector2) {scroll + fundo_chão.width, HEIGHT / 4}, LIME); //Fundo à medida que o scroll vai andando, é simplesmente uma sobreposição do fundo
+
+
+
+		BeginMode2D(cam);
+
+                DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
+
+                //DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
 		
-
-		Rectangle flappyrec = {x+30, y, 100, 100};
-	
-
+		Rectangle flappyrec = {
+                        x + (flappy.width * 0.2 - hitboxflappy_x) / 2,
+                        y + (flappy.height * 0.2 - hitboxflappy_y) / 2,
+                        hitboxflappy_x,
+                        hitboxflappy_y};
+                DrawRectangleLinesEx(flappyrec, 3.0, RED);
+		
 		for (int i = 0; i < 20; i++) {
 
 		
@@ -160,7 +174,7 @@ void  main() {
 			}
 		
 
-			Rectangle pipecima = {cols[i].rectx, 30, 70, cols[i].h};
+			Rectangle pipecima = {cols[i].rectx, 0, 70, cols[i].h};
 	       		Rectangle pipebaixo = {cols[i].rectx + 2, (HEIGHT - cols[i].h2) - 5, 70, cols[i].h2};
 
 			DrawRectangleLinesEx(pipecima, 2.0, RED);
@@ -177,29 +191,10 @@ void  main() {
 			}
 		}
 
-	
-	
 
-
-		BeginMode2D(cam);
-
-
-		
-		//DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
-
-
-
-		DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
-		DrawRectangleLinesEx(flappyrec, 3.0, RED);
-		if (ball_speed_y > 0 && rot < 30) {
-			rot += 1;	
-		}
-
-		else if (ball_speed_y < -0.5 && rot > -30) {
-			rot -= 1;
-		}
 		EndMode2D();
 		
+		//Calcular tudo de novo
 
 		DrawText(TextFormat("X = %f", x), 10, 10, 10,  ORANGE);
 		DrawText(TextFormat("Y = %f", y), 10, 30, 10, ORANGE);
