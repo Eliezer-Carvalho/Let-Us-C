@@ -9,11 +9,11 @@
 
 float gravity = 0.5;
 
-float ball_speed_x = 1.5;
-float ball_speed_y = 1;
+float ball_speed_x = 0;
+float ball_speed_y = 0.5;
 
-float x = 10.0; // > + mais para a direita
-float y = 100.0; // > + para baixo 
+float x = 150.0; // > + mais para a direita
+float y = 0.01; // > + para baixo 
 
 
 struct colunas {
@@ -38,24 +38,19 @@ void  main() {
 
 	Texture2D fundo = LoadTexture("Background/teste/Tropical mountains - Layer 1.png"); // A imagem é sempre carregada com duas vezes a escala original
 	Texture2D fundo_chão = LoadTexture("Background/teste/Tropical mountains - Layer 3.png"); // Imagem de baixo
-	Texture2D flappy = LoadTexture("Background/flappybird.png");
+	Texture2D flappy = LoadTexture("Background/flappybird2.png");
 
 
 	float scroll = 0.0f;
 	float scroll2 = 0.0f; 
 
-	Camera2D cam = { 0 };
-        cam.target = (Vector2){x, HEIGHT};
-        cam.offset = (Vector2){WIDTH / 3.0f, HEIGHT / 3.0f};
-        cam.rotation = 0.0f;
-        cam.zoom = 0.5f;
 
-	struct colunas cols [20];
+	struct colunas cols [50];
 	int rectx = 640;
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 50; i++) {
 
-		int h = GetRandomValue(75,150);
-		int h2 = GetRandomValue(75, 150);
+		int h = GetRandomValue(75,125);
+		int h2 = GetRandomValue(75, 125);
 
 
 		cols[i].rectx = rectx;
@@ -69,8 +64,8 @@ void  main() {
 	bool colisao2 = false;
 
 
-	int hitboxflappy_x = flappy.width * 0.2 * 0.5;
-	int hitboxflappy_y = flappy.height * 0.2 * 0.5;
+	int hitboxflappy_x = flappy.width * 0.5 * 0.5;
+	int hitboxflappy_y = flappy.height * 0.5 * 0.5;
 
 	while (!WindowShouldClose()) { //Loop que define: 'Enquanto janela aberta..'
 		
@@ -86,7 +81,7 @@ void  main() {
 		y += ball_speed_y; 		// y = y + ball_speed_y && A velocidade muda o movimento.
 
 
-		if (y >= 760 || y <= 100) { //Estabelece o limite da bola que neste caso é o chão
+		if (y >= 300 || y <= 0) { //Estabelece o limite da bola que neste caso é o chão
 
 			ball_speed_y *= 0;	//A velocidade passa a 0 porque queremos terminar o movimento.
 			gravity *= 0;		//A gravidade passa também a 0.
@@ -96,7 +91,7 @@ void  main() {
 		}
 
 
-	       	else if (y < 760 && y > 100) {
+	       	else if (y < 360 && y > 0) {
 			scroll -= 1.5f;
 			if (scroll <= -fundo_chão.width) {
 				scroll = 0;
@@ -125,7 +120,7 @@ void  main() {
 			}
 		}
 	
-		cam.target = (Vector2) {x, HEIGHT}; 	
+//		cam.target = (Vector2) {x, HEIGHT}; 	
 	
 	
 		//colisão1 = CheckCollisionRecs(flappy, pipecima);
@@ -149,28 +144,28 @@ void  main() {
 
 
 
-		BeginMode2D(cam);
+	//		BeginMode2D(cam);
 
-                DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.2, WHITE);
+                DrawTextureEx(flappy, (Vector2) {x, y}, rot, 0.5, WHITE);
 
                 //DrawCircle(x, y , 50, ORANGE); //Desenho do circulo com y += para simular queda
 		
 		Rectangle flappyrec = {
-                        x + (flappy.width * 0.2 - hitboxflappy_x) / 2,
-                        y + (flappy.height * 0.2 - hitboxflappy_y) / 2,
+                        x + (flappy.width * 0.5 - hitboxflappy_x) / 2,
+                        y + (flappy.height * 0.5 - hitboxflappy_y) / 2,
                         hitboxflappy_x,
                         hitboxflappy_y};
                 DrawRectangleLinesEx(flappyrec, 3.0, RED);
 		
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 50; i++) {
 
 		
 			DrawRectangle(cols[i].rectx, 0, 70, cols[i].h, DARKBLUE);
 			DrawRectangle(cols[i].rectx, HEIGHT - cols[i].h2, 70, cols[i].h2, DARKBLUE);
 			
 
-			if (y > 100 && y < 760) {
-			cols[i].rectx -= 2;
+			if (y > 0 && y < 300) {
+			cols[i].rectx -= 2.5;
 			}
 		
 
@@ -183,7 +178,7 @@ void  main() {
 			colisao1 = CheckCollisionRecs(flappyrec, pipecima);
                 	colisao2 = CheckCollisionRecs(flappyrec, pipebaixo);
 
-			if (colisao1) {
+			if (colisao1 || colisao2) {
 				
 				DrawText(TextFormat("COLISÃO CIMA = %d", colisao1), 10, 130, 30, RED);
 
@@ -192,7 +187,7 @@ void  main() {
 		}
 
 
-		EndMode2D();
+	//	EndMode2D();
 		
 		//Calcular tudo de novo
 
